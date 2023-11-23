@@ -87,4 +87,4 @@ while running:
     pygame.display.flip()
 pygame.quit()
 
-print("javnny")
+print("javnny y yhair")

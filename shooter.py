@@ -88,3 +88,4 @@ while running:
 pygame.quit()
 
 print("javnny y yhair")
+print("jovanny y danna")

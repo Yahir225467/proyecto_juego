@@ -3,7 +3,6 @@
 # Mantén un contador de turnos para emular el comportamiento de Round Robin
 turn_counter = 0
 
-# Divide la lógica del juego en turnos para simular Round Robin
 while running:
     # Lógica del juego por turnos (emulando Round Robin)
     if turn_counter % 2 == 0:

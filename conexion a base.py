@@ -5,7 +5,7 @@ config = {
     'user': 'root',
     'password': '1234',
     'host': 'localhost',
-    'database': 'juegoxd',
+    'database': 'juego',
     'raise_on_warnings': True
 }
 
@@ -17,7 +17,7 @@ try:
         cursor = connection.cursor()
 
         # Ejecutar una consulta
-        query = "SELECT * FROM nombre_tabla"
+        query = "SELECT * FROM puntuacion"
         cursor.execute(query)
 
         # Obtener resultados

@@ -2,10 +2,10 @@ import mysql.connector
 
 # Configuración de la conexión a la base de datos
 config = {
-    'user': 'tu_usuario',
-    'password': 'tu_contraseña',
+    'user': 'root',
+    'password': '1234',
     'host': 'localhost',
-    'database': 'nombre_de_la_base_de_datos',
+    'database': 'juegoxd',
     'raise_on_warnings': True
 }
 

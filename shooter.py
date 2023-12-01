@@ -32,7 +32,7 @@ def draw_shield_bar(surface, x, y, percentage):
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
-		self.image = pygame.image.load("assets/player.png").convert()
+		self.image = pygame.image.load("assets/player_2.png").convert()
 		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
 		self.rect.centerx = WIDTH // 2
@@ -151,7 +151,7 @@ for i in range(9):
 	explosion_anim.append(img_scale)
 
 # Cargar imagen de fondo
-background = pygame.image.load("assets/background.png").convert()
+background = pygame.image.load("assets/universe.png").convert()
 
 # Cargar sonidos
 laser_sound = pygame.mixer.Sound("assets/laser5.ogg")

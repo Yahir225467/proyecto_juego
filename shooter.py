@@ -1,5 +1,6 @@
 import pygame
 import random
+from concurrent.futures import ThreadPoolExecutor
 
 WIDTH = 1200
 HEIGHT = 700
@@ -229,5 +230,59 @@ while running:
 	draw_shield_bar(screen, 5, 5, player.shield)
 
 	pygame.display.flip()
+
+# Función para el bucle del juego
+def bucle_juego():
+    global running
+    global game_over
+    global all_sprites
+    global meteor_list
+    global bullets
+    global player
+    global score
+
+    while running:
+        if game_over:
+            game_over = False
+            all_sprites = pygame.sprite.Group()
+            meteor_list = pygame.sprite.Group()
+            bullets = pygame.sprite.Group()
+
+            player = Player()
+            all_sprites.add(player)
+            for i in range(8):
+                meteor = Meteor()
+                all_sprites.add(meteor)
+                meteor_list.add(meteor)
+
+            score = 0
+
+        clock.tick(60)
+        all_sprites.update()
+
+        # Resto de la lógica del juego...
+
+# Función para el bucle de eventos
+def bucle_eventos():
+    global running
+    global game_over
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.shoot()
+
+# ThreadPool con dos hilos (uno para el bucle del juego y otro para el bucle de eventos)
+with ThreadPoolExecutor(max_workers=2) as executor:
+    # Inicia ambos hilos
+    futuro_juego = executor.submit(bucle_juego)
+    futuro_eventos = executor.submit(bucle_eventos)
+
+    # Espera a que ambos hilos terminen
+    futuro_juego.result()
+    futuro_eventos.result()
+
 pygame.quit()
-print("commit")

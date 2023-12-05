@@ -260,7 +260,6 @@ def bucle_juego():
         clock.tick(60)
         all_sprites.update()
 
-        # Resto de la lógica del juego...
 
 # Función para el bucle de eventos
 def bucle_eventos():

@@ -1,6 +1,7 @@
 import pygame
 import random
 from concurrent.futures import ThreadPoolExecutor
+import mysql.connector
 
 WIDTH = 1200
 HEIGHT = 700
@@ -8,11 +9,34 @@ BLACK = (0, 0, 0)
 WHITE = ( 255, 255, 255)
 GREEN = (0, 255, 0)
 
+# Conexión a MySQL
+mydb = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    password="1234",
+    database="bddatos"
+)
+
+mycursor = mydb.cursor()
+# Función para insertar puntuación en la base de datos
+def insert(score):
+    sql = "INSERT INTO puntuacion (puntuacion) VALUES (%s)"
+    val = (score,)
+    mycursor.execute(sql, val)
+    mydb.commit()
+    print("Puntuación insertada correctamente")
+
+# ... (Tu código existente para el juego de
+
+# Función para insertar puntuación en la base de datos
+
+
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Shooter")
 clock = pygame.time.Clock()
+
 
 def draw_text(surface, text, size, x, y):
 	font = pygame.font.SysFont("serif", size)
@@ -170,7 +194,6 @@ while running:
 	if game_over:
 
 		show_go_screen()
-
 		game_over = False
 		all_sprites = pygame.sprite.Group()
 		meteor_list = pygame.sprite.Group()
@@ -184,6 +207,9 @@ while running:
 			meteor_list.add(meteor)
 
 		score = 0
+
+		insert(score)
+
 
 
 	clock.tick(60)

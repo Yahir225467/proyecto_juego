@@ -2,6 +2,7 @@ import pygame
 import random
 from concurrent.futures import ThreadPoolExecutor
 import sqlite3
+import threading
 
 WIDTH = 1200
 HEIGHT = 700
@@ -166,6 +167,7 @@ pygame.mixer.music.set_volume(0.2)
 
 #Establecer conexión a la base de datos
 conn = sqlite3.connect("puntuaciones.db")
+db_lock = threading.Lock()
 
 # Crear tabla si no existe
 conn.execute('''
@@ -245,6 +247,23 @@ while running:
 	draw_shield_bar(screen, 5, 5, player.shield)
 
 	pygame.display.flip()
+# Guardar puntuación al finalizar el juego
+if not game_over:
+    # Obtener la puntuación del jugador
+    puntuacion_jugador = score
+
+    # Insertar la puntuación en la base de datos
+with db_lock:
+    conn.execute("INSERT INTO puntuaciones (puntuacion) VALUES (?)", (puntuacion_jugador,))
+
+    # Guardar cambios en la base de datos
+    conn.commit()
+
+# Imprimir todos los puntajes
+with db_lock:
+	cursor = conn.cursor()
+	cursor.execute("SELECT * FROM puntuaciones")
+	resultados = cursor.fetchall()
 
 # Cerrar conexión a la base de datos
 conn.close()
@@ -301,8 +320,9 @@ with ThreadPoolExecutor(max_workers=2) as executor:
     futuro_eventos = executor.submit(bucle_eventos)
 
     # Espera a que ambos hilos terminen
-    futuro_juego.result()
-    futuro_eventos.result()
-
+    futuro_juego.join()
+    futuro_eventos.join()
 pygame.quit()
+
+
 
